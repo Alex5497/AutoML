@@ -1,16 +1,18 @@
-# This is a sample Python script.
+from pycaret.classification import *
+import pandas as pd
+from sklearn import datasets
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
 
+data = pd.DataFrame(data=iris.data, columns=iris.feature_names)
+data['species'] = iris.target
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+experiment = setup(data, target='species')
 
+best_model = compare_models()
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+final_model = finalize_model(best_model)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+save_model(final_model, 'iris_species_classification_model')
